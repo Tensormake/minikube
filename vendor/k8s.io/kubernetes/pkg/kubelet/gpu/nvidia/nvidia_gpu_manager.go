@@ -153,7 +153,7 @@ func (ngm *nvidiaGPUManager) AllocateGPU(pod *v1.Pod, container *v1.Container) (
 	devicesInUse := ngm.allocated.devices()
 	glog.V(5).Infof("gpus in use: %v", devicesInUse.List())
 	// Get a list of available GPUs.
-	available := ngm.allGPUs.Difference(devicesInUse)
+	available := ngm.allGPUs // Reuse all GPUs as needed.
 	glog.V(5).Infof("gpus available: %v", available.List())
 	if int64(available.Len()) < gpusNeeded {
 		return nil, fmt.Errorf("requested number of GPUs unavailable. Requested: %d, Available: %d", gpusNeeded, available.Len())
