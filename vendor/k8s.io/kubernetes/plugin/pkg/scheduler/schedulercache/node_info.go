@@ -47,7 +47,7 @@ type NodeInfo struct {
 	nonzeroRequest    *Resource
 	// We store allocatedResources (which is Node.Status.Allocatable.*) explicitly
 	// as int64, to avoid conversions and accessing map.
-	allocatableResource *Resource
+	allocatableResource *ResourceResource
 
 	// Cached tains of the node for faster lookup.
 	taints    []v1.Taint

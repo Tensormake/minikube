@@ -109,7 +109,8 @@ func (ngm *nvidiaGPUManager) Start() error {
 
 // Get how many GPU cards we have.
 func (ngm *nvidiaGPUManager) Capacity() v1.ResourceList {
-	gpus := resource.NewQuantity(int64(len(ngm.allGPUs)), resource.DecimalSI)
+
+	gpus := resource.NewQuantity(int64(len(ngm.allGPUs)*100), resource.DecimalSI)
 	return v1.ResourceList{
 		v1.ResourceNvidiaGPU: *gpus,
 	}
