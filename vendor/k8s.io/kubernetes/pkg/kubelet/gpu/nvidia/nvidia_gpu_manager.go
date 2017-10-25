@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"path"
 
 
 	"github.com/golang/glog"
