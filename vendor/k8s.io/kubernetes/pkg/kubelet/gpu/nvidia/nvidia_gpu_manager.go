@@ -121,8 +121,8 @@ func (ngm *nvidiaGPUManager) Capacity() v1.ResourceList {
 	ngm.f.WriteString("nvidiaGPUManager.Capacity\n")
 	ngm.f.Sync()
     fmt.Printf("Calculating node capacity")
-	//gpus := resource.NewQuantity(int64(len(ngm.allGPUs)*100), resource.DecimalSI)
-	gpus := resource.NewQuantity(int64(0), resource.DecimalSI)
+	gpus := resource.NewQuantity(int64(len(ngm.allGPUs)*100), resource.DecimalSI)
+
 	return v1.ResourceList{
 		v1.ResourceNvidiaGPU: *gpus,
 	}
@@ -215,7 +215,7 @@ func (ngm *nvidiaGPUManager) discoverGPUs() error {
 	if err != nil {
 		return err
 	}
-	/*
+
 	for _, f := range files {
 		if f.IsDir() {
 			continue
@@ -225,7 +225,7 @@ func (ngm *nvidiaGPUManager) discoverGPUs() error {
 			ngm.allGPUs.Insert(path.Join(devDirectory, f.Name()))
 		}
 
-	}*/
+	}
 
 	return nil
 }
