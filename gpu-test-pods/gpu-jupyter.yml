@@ -1,0 +1,40 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: gpu-jupyter
+spec:
+  containers:
+  - name: gpu-container
+    image: gcr.io/tensorflow/tensorflow:latest-gpu
+    imagePullPolicy: IfNotPresent
+    command: ["jupyter"]
+    args: ["notebook", "--no-browser", "--ip=127.0.0.1", "--port=12000", "--allow-root"]
+    resources:
+      requests:
+        alpha.kubernetes.io/nvidia-gpu: 1
+      limits:
+        alpha.kubernetes.io/nvidia-gpu: 1
+    volumeMounts:
+    - name: nvidia-driver-375-26
+      mountPath: /usr/local/nvidia
+      readOnly: true
+    - name: libcuda-so
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so
+    - name: libcuda-so-1
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+    - name: libcuda-so-375-26
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.375.26
+  restartPolicy: Never
+  volumes:
+  - name: nvidia-driver-375-26
+    hostPath:
+      path: /var/lib/nvidia-docker/volumes/nvidia_driver/375.26
+  - name: libcuda-so
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so
+  - name: libcuda-so-1
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+  - name: libcuda-so-375-26
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so.375.26
