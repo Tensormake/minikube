@@ -1,4 +1,4 @@
-# Minikube
+# Minikube for GPU-sharing
 
 [![BuildStatus Widget]][BuildStatus Result]
 [![CodeCovWidget]][CodeCovResult]
@@ -14,6 +14,62 @@
 [CodeCovWidget]: https://codecov.io/gh/kubernetes/minikube/branch/master/graph/badge.svg
 
 <img src="https://github.com/kubernetes/minikube/raw/master/logo/logo.png" width="100">
+
+## Notes for GPU-sharing
+
+** Note this is a public repository **
+
+This fork of minikube enables sharing of GPU resources across containers. This is achieved by conceiving
+kubenetes (in this case localkube) into beleliving each node has 100n GPU cards. When starting containers,
+we will give every container the same access to every GPU found in the system. So roughly speaking,
+you can start 100 containers in each GPU machine. 
+
+programs in the containers are responsible for sharing/limiting/negotiating the use of GPUs.
+
+When defining pods, configuration must dictate the GPU limits. if the limit is 0 or unspecified, 
+the container will not get GPU access. When non-zero, the GPU limit will account for the calculation 
+of the available GPU resources in each node. 
+
+If a node has 1 pythical GPU, it will claims to have 100. If we start two containers, each asking for 60 GPU, one of them 
+will not be satisfied.
+
+### Setup Notes
+
+Install lang Go and optionally gogland IDE .
+
+Clone minikube into the following folder
+```
+mkdir -p ~/go/src/k8s.io/
+cd ~/go/src/k8s.io/
+git clone https://github.com/Tensormake/minikube.git
+```
+
+To build minikube and localkube:
+```
+cd ~/go/src/k8s.io/minikube
+make minikube
+make out/localkube
+```
+Deploy localkube to local minikube cache. Minikube normally downloads localkube 
+from google cloud, and keep it in the 
+cache location below. As long as the matching version can be found in the cache,
+minikube will not download. This allows us to use custom built version of localkube
+
+Note that this might have to run after running minikube for once.
+```
+cp out/localkube ~/.minikube/cache/localkube/localkube-v1.8.0
+```
+
+To start minikube from bare metal with GPU features enabled
+```
+cd ~/go/src/k8s.io/minikube
+./out/minikube start --feature-gates="Accelerators=true" --vm-driver=none
+```
+
+### References
+
+https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/
+https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/
 
 ## What is Minikube?
 
