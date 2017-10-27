@@ -66,6 +66,13 @@ cd ~/go/src/k8s.io/minikube
 ./out/minikube start --feature-gates="Accelerators=true" --vm-driver=none
 ```
 
+Now you can test gpu sharing:
+
+- Add pods to minikube. Example pod configs are found under gpu-test-pods
+- Tap into those containers with interactive mode (kubctl exec -it *pod* bash)
+- Do what every you want with GPU in those containers
+- Run nvidia-smi in the host to see how much GPU memory are consumed by each container process.
+
 ### References
 
 https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/
