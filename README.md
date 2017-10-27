@@ -17,7 +17,7 @@
 
 ## Notes for GPU-sharing
 
-** Note this is a public repository **
+**Note this is a public repository**
 
 This fork of minikube enables sharing of GPU resources across containers. This is achieved by conceiving
 kubenetes (in this case localkube) into beleliving each node has 100n GPU cards. When starting containers,
